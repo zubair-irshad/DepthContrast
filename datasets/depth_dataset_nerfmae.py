@@ -9,8 +9,8 @@ import os
 
 import numpy as np
 
-import sys
-sys.path.append('/home/zubairirshad/DepthContrast')
+# import sys
+# sys.path.append('/home/zubairirshad/DepthContrast')
 from datasets.transforms.augment3d import get_transform3d
 
 import time
