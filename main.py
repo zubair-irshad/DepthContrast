@@ -204,7 +204,8 @@ def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logg
     # if tb_writter is not None:
     for meter in progress.meters:
         # tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
-        wandb.log({f"{phase}-{meter.name}": meter.avg})
+        if args.rank == 0:
+            wandb.log({f"{phase}-{meter.name}": meter.avg})
 
         #also print
         print(f"{phase}-{meter.name}: {meter.avg}")
