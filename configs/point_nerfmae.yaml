@@ -29,6 +29,7 @@ dataset:
       aspect: 0.75
     - name: randomdrop
       crop: 0.2
+    - noise: 0.01
     - name: multiscale
     - name: RandomFlip
     - name: RandomRotateAll
