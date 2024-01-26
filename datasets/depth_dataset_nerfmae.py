@@ -191,6 +191,11 @@ class DepthContrastDataset_NeRFMAE(Dataset):
 
         point = np.concatenate([point, rgbsigma], 1)
 
+        if point.shape[0] ==0:
+            is_success = False
+            print("scene_features_path", scene_features_path)
+            print("point shape", point.shape)
+
         # print("point shape", point.shape)
 
         # point = np.load(point_path)
