@@ -26,9 +26,14 @@ except RuntimeError:
 import torch.multiprocessing as mp
 import wandb
 
-wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
-wandb.init(project="DepthContrast"
-)
+
+#check rank and only use rank 0 for wandb
+
+if mp.get_rank() == 0:
+
+    wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
+    wandb.init(project="DepthContrast"
+    )
     
   
 import utils.logger
