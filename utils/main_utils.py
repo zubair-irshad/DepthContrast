@@ -29,7 +29,7 @@ def initialize_distributed_backend(args, ngpus_per_node):
 
     if args.rank == -1:
         args.rank = 0
-    return args
+    return args, dist
 
 ### For testing only
 def write_ply_color(points, colors, out_filename):

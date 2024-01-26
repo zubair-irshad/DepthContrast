@@ -75,9 +75,7 @@ def main():
                       'You may see unexpected behavior when restarting '
                       'from checkpoints.')
 
-    if args.rank == 0:
-        wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
-        wandb.init(project="DepthContrast")
+
 
     ngpus_per_node = args.ngpus
     if args.multiprocessing_distributed:
@@ -92,8 +90,13 @@ def main_worker(gpu, ngpus, args, cfg):
     ngpus_per_node = ngpus
     
     # Setup environment
-    args = main_utils.initialize_distributed_backend(args, ngpus_per_node) ### Use other method instead
+    args, dist = main_utils.initialize_distributed_backend(args, ngpus_per_node) ### Use other method instead
     logger, tb_writter, model_dir = main_utils.prep_environment(args, cfg)
+
+
+    if dist.get_rank() == 0:
+        wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
+        wandb.init(project="DepthContrast")
 
     # Define model
     model = main_utils.build_model(cfg['model'], logger)
@@ -137,14 +140,14 @@ def main_worker(gpu, ngpus, args, cfg):
         # Train for one epoch
         logger.add_line('='*30 + ' Epoch {} '.format(epoch) + '='*30)
         logger.add_line('LR: {}'.format(scheduler.get_lr()))
-        run_phase('train', train_loader, model, optimizer, train_criterion, epoch, args, cfg, logger, tb_writter)
+        run_phase('train', train_loader, model, optimizer, train_criterion, epoch, args, cfg, logger, tb_writter, dist)
         scheduler.step(epoch)
 
         if ((epoch % test_freq) == 0) or (epoch == end_epoch - 1):
             ckp_manager.save(epoch+1, model=model, optimizer=optimizer, train_criterion=train_criterion)
 
 
-def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logger, tb_writter):
+def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logger, tb_writter, dist):
     from utils import metrics_utils
     logger.add_line('\n{}: Epoch {}'.format(phase, epoch))
     batch_time = metrics_utils.AverageMeter('Time', ':6.3f', window_size=100)
@@ -202,7 +205,7 @@ def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logg
     # if tb_writter is not None:
     for meter in progress.meters:
         # tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
-        if args.rank == 0:
+        if dist.get_rank() == 0:
             wandb.log({f"{phase}-{meter.name}": meter.avg})
         #also print
         print(f"{phase}-{meter.name}: {meter.avg}")
