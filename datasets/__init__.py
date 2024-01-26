@@ -9,7 +9,8 @@ import logging
 
 import torch
 from datasets.collators import get_collator
-from datasets.depth_dataset import DepthContrastDataset
+# from datasets.depth_dataset import DepthContrastDataset
+from datasets.depth_dataset_nerfmae import DepthContrastDataset_NeRFMAE as DepthContrastDataset
 from torch.utils.data import DataLoader
 
 
