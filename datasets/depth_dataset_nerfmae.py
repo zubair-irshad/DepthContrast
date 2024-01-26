@@ -191,7 +191,7 @@ class DepthContrastDataset_NeRFMAE(Dataset):
 
         point = np.concatenate([point, rgbsigma], 1)
 
-        print("point shape", point.shape)
+        # print("point shape", point.shape)
 
         # point = np.load(point_path)
         ### Add height

@@ -226,7 +226,11 @@ def get_transform3d(data, input_transforms_list, vox=False):
                 point_noise = (np.random.rand(pt_shape[0], 3) - 0.5) * float(transform_config['noise'])
                 point_cloud[:,0:3] += point_noise#[new_pointidx,:]
             if transform_config['name'] == 'randomcuboid':
-                range_xyz = np.max(point_cloud[:,0:3], axis=0) - np.min(point_cloud[:,0:3], axis=0)
+                try:
+                    range_xyz = np.max(point_cloud[:,0:3], axis=0) - np.min(point_cloud[:,0:3], axis=0)
+                except:
+                    print ("point_cloud", point_cloud.shape)
+                    exit()
                 if ('randcrop' in transform_config):# and (int(transform_config['randcrop']) == 1):
                     crop_range = float(transform_config['crop']) + np.random.rand(3) * (float(transform_config['randcrop']) - float(transform_config['crop']))
                     if ('aspect' in transform_config):
