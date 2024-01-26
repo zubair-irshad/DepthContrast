@@ -199,6 +199,12 @@ def build_dataloader(config, num_workers, distributed):
         num_dataloader_workers=num_workers,
         pin_memory=False,### Questionable
     )
+
+
+    print("Dataloader loaded with {} samples".format(len(loader)))
+    #print batch size
+    print("Batch size: {}".format(config["BATCHSIZE_PER_REPLICA"]))
+    
     return loader
 
 def build_criterion(cfg, logger=None):

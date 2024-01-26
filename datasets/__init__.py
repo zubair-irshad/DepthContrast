@@ -19,6 +19,7 @@ __all__ = ["DepthContrastDataset", "get_data_files"]
 
 def build_dataset(cfg):
     dataset = DepthContrastDataset(cfg)
+    print("Dataset loaded with {} samples".format(len(dataset)))
     return dataset
 
 
