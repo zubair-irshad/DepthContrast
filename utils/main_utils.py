@@ -98,7 +98,7 @@ def recursive_copy_to_gpu(value, non_blocking=True, max_depth=3, curr_depth=0):
         raise AttributeError("Value must have .cuda attr or be a Seq / Map iterable")
 
 def prep_environment(args, cfg):
-    from torch.utils.tensorboard import SummaryWriter
+    # from torch.utils.tensorboard import SummaryWriter
 
     # Prepare loggers (must be configured after initialize_distributed_backend())
     model_dir = '{}/{}'.format(cfg['model']['model_dir'], cfg['model']['name'])
@@ -132,7 +132,7 @@ def prep_environment(args, cfg):
     if cfg['log2tb'] and args.rank == 0:
         tb_dir = '{}/tensorboard'.format(model_dir)
         os.system('mkdir -p {}'.format(tb_dir))
-        tb_writter = SummaryWriter(tb_dir)
+        # tb_writter = SummaryWriter(tb_dir)
 
     return logger, tb_writter, model_dir
 

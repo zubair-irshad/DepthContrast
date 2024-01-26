@@ -89,9 +89,12 @@ def get_transform3d(data, input_transforms_list, vox=False):
     counter = 0
     centers = []
     for point_cloud in ptdata:
-        if len(point_cloud) > 50000:
-            newidx = np.random.choice(len(point_cloud), 50000, replace=False)
+        num_points = 200000
+        print("point_cloud", point_cloud.shape)
+        if len(point_cloud) > num_points:
+            newidx = np.random.choice(len(point_cloud), num_points, replace=False)
             point_cloud = point_cloud[newidx,:]
+            print("point_cloud", point_cloud.shape)
         for transform_config in input_transforms_list:
             if transform_config['name'] == 'subcenter':
                 xyz_center = np.expand_dims(np.mean(point_cloud[:,:3], axis=0), 0)
@@ -270,14 +273,15 @@ def get_transform3d(data, input_transforms_list, vox=False):
                     
                 #print ("final", np.sum(new_pointidx))
                 point_cloud = point_cloud[new_pointidx,:]
-            if transform_config['name'] == 'multiscale':
-                rand_scale = [5000, 10000, 15000, 20000]
-                rand_scale_idx = np.random.choice(len(rand_scale))
-                if len(point_cloud) >= rand_scale[rand_scale_idx]:
-                    idx = np.random.choice(len(point_cloud), rand_scale[rand_scale_idx], replace=False)
-                else:
-                    idx = np.random.choice(len(point_cloud), rand_scale[rand_scale_idx], replace=True)
-                point_cloud = point_cloud[idx,:]
+            # if transform_config['name'] == 'multiscale':
+            #     rand_scale = [5000, 10000, 15000, 20000]
+            #     # rand_scale = [100000, 200000, 300000, 400000]
+            #     rand_scale_idx = np.random.choice(len(rand_scale))
+            #     if len(point_cloud) >= rand_scale[rand_scale_idx]:
+            #         idx = np.random.choice(len(point_cloud), rand_scale[rand_scale_idx], replace=False)
+            #     else:
+            #         idx = np.random.choice(len(point_cloud), rand_scale[rand_scale_idx], replace=True)
+            #     point_cloud = point_cloud[idx,:]
                 #pc2obj(point_cloud, "new.obj")
             if transform_config['name'] == 'randomdrop':
                 range_xyz = np.max(point_cloud[:,0:3], axis=0) - np.min(point_cloud[:,0:3], axis=0)
@@ -310,11 +314,13 @@ def get_transform3d(data, input_transforms_list, vox=False):
                 new_pointidx = ~((upper_idx) & (lower_idx))
                 point_cloud = point_cloud[new_pointidx,:]
                 #write_ply_color(point_cloud[:,:3], point_cloud[:,3:], "after.ply")
+
+            num_pts_final = 90000
             if transform_config['name'] == 'ToTensor':
-                if len(point_cloud) >= 20000:
-                    idx = np.random.choice(len(point_cloud), 20000, replace=False)
+                if len(point_cloud) >= num_pts_final:
+                    idx = np.random.choice(len(point_cloud), num_pts_final, replace=False)
                 else:
-                    idx = np.random.choice(len(point_cloud), 20000, replace=True)
+                    idx = np.random.choice(len(point_cloud), num_pts_final, replace=True)
 
                 if np.sum(point_cloud) == 0: ### If there are no points, use sudo points
                     pt_shape = point_cloud.shape
@@ -324,10 +330,10 @@ def get_transform3d(data, input_transforms_list, vox=False):
                 if (vox == False):
                     point_cloud = torch.tensor(point_cloud).float()
             if transform_config['name'] == 'ToFinal':
-                if len(point_cloud) >= 20000:
-                    idx = np.random.choice(len(point_cloud), 20000, replace=False)
+                if len(point_cloud) >= num_pts_final:
+                    idx = np.random.choice(len(point_cloud), num_pts_final, replace=False)
                 else:
-                    idx = np.random.choice(len(point_cloud), 20000, replace=True)
+                    idx = np.random.choice(len(point_cloud), num_pts_final, replace=True)
                     
                 if np.sum(point_cloud) == 0:### If there are no points, use sudo points
                     pt_shape = point_cloud.shape

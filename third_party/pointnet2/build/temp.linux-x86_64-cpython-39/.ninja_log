@@ -1,0 +1,10 @@
+# ninja log v5
+1	9229	1706208598827863019	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/bindings.o	c47a90058b52e480
+0	9505	1706208599107857257	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/ball_query_gpu.o	90f945f07638bc89
+1	9507	1706208599107857257	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/group_points_gpu.o	e10f53db5c579f0d
+2	9512	1706208599115857091	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/interpolate_gpu.o	4f22afcce80f8a99
+0	9571	1706208599175855857	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/ball_query.o	739d248031acf476
+2	9649	1706208599251854293	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/interpolate.o	abd8aefd9eae3157
+2	9654	1706208599259854128	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/sampling.o	8cdd4d8c9985b1a2
+1	9696	1706208599299853305	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/group_points.o	749e22c94ff7bf73
+2	9852	1706208599451850177	/home/zubairirshad/DepthContrast/third_party/pointnet2/build/temp.linux-x86_64-cpython-39/_ext_src/src/sampling_gpu.o	afe56bf5368510fe
