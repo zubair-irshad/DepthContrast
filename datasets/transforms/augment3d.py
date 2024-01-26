@@ -90,11 +90,11 @@ def get_transform3d(data, input_transforms_list, vox=False):
     centers = []
     for point_cloud in ptdata:
         num_points = 200000
-        print("point_cloud", point_cloud.shape)
+        # print("point_cloud", point_cloud.shape)
         if len(point_cloud) > num_points:
             newidx = np.random.choice(len(point_cloud), num_points, replace=False)
             point_cloud = point_cloud[newidx,:]
-            print("point_cloud", point_cloud.shape)
+            # print("point_cloud", point_cloud.shape)
         for transform_config in input_transforms_list:
             if transform_config['name'] == 'subcenter':
                 xyz_center = np.expand_dims(np.mean(point_cloud[:,:3], axis=0), 0)

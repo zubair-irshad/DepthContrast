@@ -80,7 +80,7 @@ def main():
         wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
         wandb.init(project="DepthContrast"
         )
-        
+
     ngpus_per_node = args.ngpus
     if args.multiprocessing_distributed:
         args.world_size = ngpus_per_node * args.world_size
@@ -203,7 +203,11 @@ def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logg
 
     if tb_writter is not None:
         for meter in progress.meters:
-            tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
+            # tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
+            wandb.log({f"{phase}-{meter.name}": meter.avg})
+
+            #also print
+            print(f"{phase}-{meter.name}: {meter.avg}")
 
 
 if __name__ == '__main__':

@@ -53,7 +53,7 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         # self._get_data_files("train")
 
         self.data_paths = str(self.cfg["DATA_PATHS"][0])
-        print(self.data_paths)
+        # print(self.data_paths)
         local_rank = int(os.environ.get("LOCAL_RANK", 0))
         logging.info(f"Rank: {local_rank} Data files:\n{self.data_paths}")
 
@@ -171,7 +171,7 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         
         data, valid = self.load_data(idx)
 
-        print("data shape", data.shape)
+        # print("data shape", data.shape)
         item["data"].append(data)
         item["data_moco"].append(np.copy(data))
         item["data_valid"].append(1 if valid else -1)
