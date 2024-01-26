@@ -24,7 +24,7 @@ dataset:
   POINT_TRANSFORMS:
     - name: randomcuboid
       crop: 0.5
-      npoints: 30000
+      npoints: 20000
       randcrop: 1.0
       aspect: 0.75
     - name: randomdrop

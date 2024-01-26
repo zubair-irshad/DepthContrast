@@ -89,7 +89,7 @@ def get_transform3d(data, input_transforms_list, vox=False):
     counter = 0
     centers = []
     for point_cloud in ptdata:
-        num_points = 200000
+        num_points = 90000
         # print("point_cloud", point_cloud.shape)
         if len(point_cloud) > num_points:
             newidx = np.random.choice(len(point_cloud), num_points, replace=False)
@@ -315,7 +315,7 @@ def get_transform3d(data, input_transforms_list, vox=False):
                 point_cloud = point_cloud[new_pointidx,:]
                 #write_ply_color(point_cloud[:,:3], point_cloud[:,3:], "after.ply")
 
-            num_pts_final = 90000
+            num_pts_final = 60000
             if transform_config['name'] == 'ToTensor':
                 if len(point_cloud) >= num_pts_final:
                     idx = np.random.choice(len(point_cloud), num_pts_final, replace=False)
