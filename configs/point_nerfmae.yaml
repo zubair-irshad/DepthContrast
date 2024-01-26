@@ -34,7 +34,6 @@ dataset:
     - name: RandomRotateAll
     - name: RandomScale
     - name: ToTensor
-    # - noise: 0.01
   COLLATE_FUNCTION: "point_moco_collator"
   INPUT_KEY_NAMES: ["points", "points_moco"]
   DROP_LAST: True
