@@ -167,6 +167,7 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         #     item["vox_moco"].append(np.copy(data))
         #     item["data_valid"].append(1 if valid else -1)
         # else:
+        print("idx", idx)
         item = {"data": [], "data_moco": [], "data_valid": [], "data_idx": []}
         
         data, valid = self.load_data(idx)

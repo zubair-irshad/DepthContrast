@@ -16,7 +16,7 @@ dataset:
   DATASET_NAMES: [scannet]
   DATA_PATHS: ['/wild6d_data/zubair/MAE_complete_data']
   DATA_LIMIT: -1
-  BATCHSIZE_PER_REPLICA: 32
+  BATCHSIZE_PER_REPLICA: 2
   LABEL_TYPE: sample_index
   DATA_TYPE: points
   VOX: False
