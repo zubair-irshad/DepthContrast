@@ -9,8 +9,8 @@ import os
 
 import numpy as np
 
-# import sys
-# sys.path.append('/home/zubairirshad/DepthContrast')
+import sys
+sys.path.append('/home/zubairirshad/DepthContrast')
 from datasets.transforms.augment3d import get_transform3d
 
 import time
@@ -191,11 +191,14 @@ class DepthContrastDataset_NeRFMAE(Dataset):
 
         point = np.concatenate([point, rgbsigma], 1)
 
+        print("point shape", point.shape)
+
         # point = np.load(point_path)
         ### Add height
         # floor_height = np.percentile(point[:,2],0.99)
         # height = point[:,2] - floor_height
         # point = np.concatenate([point, np.expand_dims(height, 1)],1)
+
         # except Exception as e:
         #     logging.warn(
         #         f"Couldn't load: {self.point_dataset[idx]}. Exception: \n{e}"
