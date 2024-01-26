@@ -29,11 +29,7 @@ import wandb
 
 #check rank and only use rank 0 for wandb
 
-if mp.get_rank() == 0:
 
-    wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
-    wandb.init(project="DepthContrast"
-    )
     
   
 import utils.logger
@@ -88,6 +84,13 @@ def main():
         main_worker(args.gpu, ngpus_per_node, args, cfg)
     
 def main_worker(gpu, ngpus, args, cfg):
+
+
+    if args.rank == 0:
+
+        wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
+        wandb.init(project="DepthContrast"
+        )
     args.gpu = gpu
     ngpus_per_node = ngpus
     
