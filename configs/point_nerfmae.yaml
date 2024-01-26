@@ -17,7 +17,7 @@ dataset:
   DATA_PATHS: ['/wild6d_data/zubair/MAE_complete_data']
   # DATA_PATHS: ['/home/zubairirshad/Downloads/front3d_rpn_data_3k']
   DATA_LIMIT: -1
-  BATCHSIZE_PER_REPLICA: 32
+  BATCHSIZE_PER_REPLICA: 2
   LABEL_TYPE: sample_index
   DATA_TYPE: points
   VOX: False

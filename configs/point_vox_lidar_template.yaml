@@ -15,7 +15,7 @@ print_freq: 5
 dataset:
   DATASET_NAMES: [waymo]
   DATA_PATHS: ['/path/to/waymo.npy']
-  BATCHSIZE_PER_REPLICA: 32
+  BATCHSIZE_PER_REPLICA: 10
   LABEL_TYPE: sample_index
   DATA_TYPE: point_vox
   Lidar: True

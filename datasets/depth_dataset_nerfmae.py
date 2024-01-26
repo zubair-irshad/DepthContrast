@@ -108,7 +108,7 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         # Reshape and concatenate to get the final grid
         grid = torch.stack((X.reshape(-1), Y.reshape(-1), Z.reshape(-1)), dim=1)
 
-        print("grid shape", grid.shape)
+        # print("grid shape", grid.shape)
         return grid
 
     # def construct_grid(self, res):
