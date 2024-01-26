@@ -29,12 +29,12 @@ dataset:
       aspect: 0.75
     - name: randomdrop
       crop: 0.2
-    - noise: 0.01
     - name: multiscale
     - name: RandomFlip
     - name: RandomRotateAll
     - name: RandomScale
     - name: ToTensor
+    # - noise: 0.01
   COLLATE_FUNCTION: "point_moco_collator"
   INPUT_KEY_NAMES: ["points", "points_moco"]
   DROP_LAST: True

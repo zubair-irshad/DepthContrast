@@ -328,7 +328,8 @@ def get_transform3d(data, input_transforms_list, vox=False):
 
                 if np.sum(point_cloud) == 0: ### If there are no points, use sudo points
                     pt_shape = point_cloud.shape
-                    point_noise = (np.random.rand(pt_shape[0], 3) - 0.5) * float(transform_config['noise'])
+                    # point_noise = (np.random.rand(pt_shape[0], 3) - 0.5) * float(transform_config['noise'])
+                    point_noise = (np.random.rand(pt_shape[0], 3) - 0.5) * 0.01
                     point_cloud[:,0:3] += point_noise
                 point_cloud = point_cloud[idx,:]
                 if (vox == False):
@@ -342,6 +343,7 @@ def get_transform3d(data, input_transforms_list, vox=False):
                 if np.sum(point_cloud) == 0:### If there are no points, use sudo points
                     pt_shape = point_cloud.shape
                     point_noise = (np.random.rand(pt_shape[0], 3) - 0.5) * float(transform_config['noise'])
+                    point_noise = (np.random.rand(pt_shape[0], 3) - 0.5) * 0.01
                     point_cloud[:,0:3] += point_noise
                 point_cloud = point_cloud[idx,:]
         outdata.append(point_cloud)
