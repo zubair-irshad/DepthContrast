@@ -11,7 +11,8 @@ import torch
 import numpy as np
 import torch.distributed as dist
 import datetime
-from torch._six import container_abcs
+import collections.abc as container_abcs
+# from torch._six import container_abcs
 from utils.logger import Logger
 
 from datasets import build_dataset, get_loader
