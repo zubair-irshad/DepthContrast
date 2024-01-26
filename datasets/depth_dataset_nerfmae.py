@@ -194,7 +194,9 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         if point.shape[0] ==0:
             is_success = False
             print("scene_features_path", scene_features_path)
-            print("point shape", point.shape)
+            print("point shape is", point.shape)
+            point = np.zeros([50000, 6])
+
 
         # print("point shape", point.shape)
 
