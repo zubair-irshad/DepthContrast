@@ -13,6 +13,8 @@ import numpy as np
 # sys.path.append('/home/zubairirshad/DepthContrast')
 from datasets.transforms.augment3d import get_transform3d
 
+import time
+
 # try:
 #     ### Default uses minkowski engine
 #     from datasets.transforms.voxelizer import Voxelizer
@@ -88,27 +90,69 @@ class DepthContrastDataset_NeRFMAE(Dataset):
 
     def construct_grid(self, res):
         res_x, res_y, res_z = res
-        x = torch.linspace(0, res_x, res_x)
-        y = torch.linspace(0, res_y, res_y)
-        z = torch.linspace(0, res_z, res_z)
+        
+        # Create 1D tensors for x, y, z
+        x = torch.linspace(0, res_x, res_x, dtype=torch.float32)
+        y = torch.linspace(0, res_y, res_y, dtype=torch.float32)
+        z = torch.linspace(0, res_z, res_z, dtype=torch.float32)
 
-        scale = torch.tensor(res).max()
-        x /= scale
-        y /= scale
-        z /= scale
+        # Use broadcasting to scale all tensors simultaneously
+        scale = torch.max(torch.tensor(res, dtype=torch.float32))
+        x = x / scale + 0.5 / scale
+        y = y / scale + 0.5 / scale
+        z = z / scale + 0.5 / scale
 
-        # Shift by 0.5 voxel
-        x += 0.5 * (1.0 / scale)
-        y += 0.5 * (1.0 / scale)
-        z += 0.5 * (1.0 / scale)
+        # Create grids using broadcasting
+        X, Y, Z = torch.meshgrid(x, y, z)
 
-        grid = []
-        for i in range(res_z):
-            for j in range(res_y):
-                for k in range(res_x):
-                    grid.append([x[k], y[j], z[i]])
+        # Reshape and concatenate to get the final grid
+        grid = torch.stack((X.reshape(-1), Y.reshape(-1), Z.reshape(-1)), dim=1)
 
-        return torch.tensor(grid)
+        print("grid shape", grid.shape)
+        return grid
+
+    # def construct_grid(self, res):
+    #     res_x, res_y, res_z = res
+    #     x = torch.linspace(0, res_x - 1, res_x) / max(res)
+    #     y = torch.linspace(0, res_y - 1, res_y) / max(res)
+    #     z = torch.linspace(0, res_z - 1, res_z) / max(res)
+
+    #     # Shift by 0.5 voxel
+    #     x += 0.5 / max(res)
+    #     y += 0.5 / max(res)
+    #     z += 0.5 / max(res)
+
+    #     # Construct grid using broadcasting
+    #     xx = x.view(res_x, 1, 1).repeat(1, res_y, res_z).flatten()
+    #     yy = y.view(1, res_y, 1).repeat(res_x, 1, res_z).flatten()
+    #     zz = z.view(1, 1, res_z).repeat(res_x, res_y, 1).flatten()
+    #     grid = torch.stack((xx, yy, zz), dim=1)
+
+    #     return grid
+
+    # def construct_grid(self, res):
+    #     res_x, res_y, res_z = res
+    #     x = torch.linspace(0, res_x, res_x)
+    #     y = torch.linspace(0, res_y, res_y)
+    #     z = torch.linspace(0, res_z, res_z)
+
+    #     scale = torch.tensor(res).max()
+    #     x /= scale
+    #     y /= scale
+    #     z /= scale
+
+    #     # Shift by 0.5 voxel
+    #     x += 0.5 * (1.0 / scale)
+    #     y += 0.5 * (1.0 / scale)
+    #     z += 0.5 * (1.0 / scale)
+
+    #     grid = []
+    #     for i in range(res_z):
+    #         for j in range(res_y):
+    #             for k in range(res_x):
+    #                 grid.append([x[k], y[j], z[i]])
+
+    #     return torch.tensor(grid)
 
     @staticmethod
     def density_to_alpha(density):
@@ -121,21 +165,29 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         scene_features_path = os.path.join(self.features_path, point_path + ".npz")
         # try:
 
+        load_start = time.time()
         with np.load(scene_features_path) as features:
             rgbsigma = features["rgbsigma"]
             alpha = self.density_to_alpha(rgbsigma[..., -1])
             rgbsigma[..., -1] = alpha
             res = features["resolution"]
-
-        rgbsigma = np.transpose(rgbsigma, (2, 1, 0, 3)).reshape(-1, 4)
+        # print("load time", time.time() - load_start)
+        # rgbsigma = np.transpose(rgbsigma, (2, 1, 0, 3)).reshape(-1, 4)
+        
+        rgbsigma = rgbsigma.reshape(-1, 4)
         alpha = rgbsigma[:, -1]
         mask = alpha > 0.01
         
+        # res = res[[2, 0, 1]]
         grid = self.construct_grid(res)
 
         point = grid[mask, :]
 
-        rgbsigma = rgbsigma[mask, :]
+        rgbsigma = rgbsigma[:,:3][mask, :]
+
+        if rgbsigma.dtype == torch.uint8:
+            # normalize rgbsigma to [0, 1]
+            rgbsigma = rgbsigma.float() / 255.0
 
         point = np.concatenate([point, rgbsigma], 1)
 
@@ -167,10 +219,12 @@ class DepthContrastDataset_NeRFMAE(Dataset):
         #     item["vox_moco"].append(np.copy(data))
         #     item["data_valid"].append(1 if valid else -1)
         # else:
-        print("idx", idx)
+        # print("idx", idx)
         item = {"data": [], "data_moco": [], "data_valid": [], "data_idx": []}
         
+        time_start = time.time()
         data, valid = self.load_data(idx)
+        # print("time taken", time.time() - time_start)
 
         # print("data shape", data.shape)
         item["data"].append(data)
@@ -217,6 +271,8 @@ class DepthContrastDataset_NeRFMAE(Dataset):
 
         tempitem = {"data": item["data_moco"]}                
         tempdata = get_transform3d(tempitem, cfg["POINT_TRANSFORMS"], vox=cfg["VOX"])
+
+        # print("time taken for transform", time.time() - time_start)
         # if cfg["VOX"]:
         #     coords = tempdata["data"][0][:,:3]
         #     feats = tempdata["data"][0][:,3:6]*255.0#np.ones(coords.shape)*255.0
