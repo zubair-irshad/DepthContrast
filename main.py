@@ -201,13 +201,13 @@ def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logg
         progress.synchronize_meters(args.gpu)
         progress.display(len(loader)*args.world_size)
 
-    if tb_writter is not None:
-        for meter in progress.meters:
-            # tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
-            wandb.log({f"{phase}-{meter.name}": meter.avg})
+    # if tb_writter is not None:
+    for meter in progress.meters:
+        # tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
+        wandb.log({f"{phase}-{meter.name}": meter.avg})
 
-            #also print
-            print(f"{phase}-{meter.name}: {meter.avg}")
+        #also print
+        print(f"{phase}-{meter.name}: {meter.avg}")
 
 
 if __name__ == '__main__':
