@@ -76,10 +76,8 @@ def main():
                       'from checkpoints.')
 
     if args.rank == 0:
-
         wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
-        wandb.init(project="DepthContrast"
-        )
+        wandb.init(project="DepthContrast")
 
     ngpus_per_node = args.ngpus
     if args.multiprocessing_distributed:
@@ -206,7 +204,6 @@ def run_phase(phase, loader, model, optimizer, criterion, epoch, args, cfg, logg
         # tb_writter.add_scalar('{}-epoch/{}'.format(phase, meter.name), meter.avg, epoch)
         if args.rank == 0:
             wandb.log({f"{phase}-{meter.name}": meter.avg})
-
         #also print
         print(f"{phase}-{meter.name}: {meter.avg}")
 
