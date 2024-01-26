@@ -193,9 +193,9 @@ class DepthContrastDataset_NeRFMAE(Dataset):
 
         # point = np.load(point_path)
         ### Add height
-        floor_height = np.percentile(point[:,2],0.99)
-        height = point[:,2] - floor_height
-        point = np.concatenate([point, np.expand_dims(height, 1)],1)
+        # floor_height = np.percentile(point[:,2],0.99)
+        # height = point[:,2] - floor_height
+        # point = np.concatenate([point, np.expand_dims(height, 1)],1)
         # except Exception as e:
         #     logging.warn(
         #         f"Couldn't load: {self.point_dataset[idx]}. Exception: \n{e}"
