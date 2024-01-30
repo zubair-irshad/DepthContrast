@@ -14,7 +14,7 @@ print_freq: 5
 
 dataset:
   DATASET_NAMES: [scannet]
-  DATA_PATHS: ['/wild6d_data/filepaths.npy']
+  DATA_PATHS: ['/wild6d_data/file_paths.npy']
   DATA_LIMIT: -1
   BATCHSIZE_PER_REPLICA: 32
   LABEL_TYPE: sample_index
