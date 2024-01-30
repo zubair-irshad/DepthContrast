@@ -16,7 +16,7 @@ dataset:
   DATASET_NAMES: [scannet]
   DATA_PATHS: ['/wild6d_data/file_paths.npy']
   DATA_LIMIT: -1
-  BATCHSIZE_PER_REPLICA: 32
+  BATCHSIZE_PER_REPLICA: 128
   LABEL_TYPE: sample_index
   DATA_TYPE: points
   VOX: False
@@ -72,5 +72,5 @@ loss:
       NORM_EMBEDDING: True
       TEMPERATURE: 0.1
       LOSS_TYPE: cross_entropy
-      NUM_NEGATIVES: 130944 
+      NUM_NEGATIVES: 130560
       EMBEDDING_DIM: 128
