@@ -72,5 +72,5 @@ loss:
       NORM_EMBEDDING: True
       TEMPERATURE: 0.1
       LOSS_TYPE: cross_entropy
-      NUM_NEGATIVES: 131072
+      NUM_NEGATIVES: 130944 
       EMBEDDING_DIM: 128

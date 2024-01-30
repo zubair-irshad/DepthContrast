@@ -84,8 +84,8 @@ class NCELossMoco(nn.Module):
         
         batch_size = keys.shape[0]
 
-        # print("batch_size", batch_size)
-        # print("self.K", self.K)
+        print("batch_size", batch_size)
+        print("self.K", self.K)
         
         ptr = int(self.queue_ptr)
         assert self.K % batch_size == 0  # for simplicity
